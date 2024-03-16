@@ -1,4 +1,5 @@
-# Data Collection: Gather a large dataset of source code files
+# Data Collection
+Gather a large dataset of source code files
 
 # Preprocessing
 Parse the source code to identify and label the syntactic elements like classes, variables, constants, functions, etc. 
