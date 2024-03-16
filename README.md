@@ -1,4 +1,4 @@
-# JavaSyntaxHighlighter
+# Java Syntax Highlighter
 ## Project Overview
 This project aims to develop a machine learning model capable of accurately performing syntax highlighting for Java source code. The model identifies and classifies syntactic elements such as classes, methods, variables, and constants, providing a visual aid to developers by enhancing code readability and maintainability.
 
