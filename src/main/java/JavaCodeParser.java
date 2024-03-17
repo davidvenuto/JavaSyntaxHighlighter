@@ -20,7 +20,7 @@ public class JavaCodeParser {
     public void parseDirectory(String directoryPath, String csvOutputPath) {
         Path path = Paths.get(directoryPath);
         try (PrintWriter writer = new PrintWriter(csvOutputPath)) {
-            writer.println("Type,Code"); // CSV header
+            writer.println("Type;Code"); // CSV header
 
             // Walk through the directory and find Java files
             try (Stream<Path> paths = Files.walk(path)) {
@@ -30,7 +30,6 @@ public class JavaCodeParser {
                         try {
                             parseCode(p, writer);
                         } catch (IOException e) {
-                            // TODO Auto-generated catch block
                             e.printStackTrace();
                         }
                     });
@@ -47,18 +46,16 @@ public class JavaCodeParser {
         result.ifSuccessful(compilationUnit -> {
             compilationUnit.findAll(ClassOrInterfaceDeclaration.class).forEach(classOrInterfaceDeclaration -> {
                 String className = classOrInterfaceDeclaration.getNameAsString();
-                writer.println("Class/Interface," + className);
+                writer.println("Class/Interface;" + className);
 
                 classOrInterfaceDeclaration.getFields().forEach(fieldDeclaration -> {
                     String fieldName = fieldDeclaration.getVariables().get(0).getNameAsString();
-                    String fieldType = fieldDeclaration.getElementType().toString();
-                    writer.println("Field," + fieldName + " : " + fieldType);
+                    writer.println("Variable;" + fieldName);
                 });
 
                 classOrInterfaceDeclaration.getMethods().forEach(methodDeclaration -> {
                     String methodName = methodDeclaration.getSignature().asString();
-                    String returnType = methodDeclaration.getType().toString();
-                    writer.println("Method," + methodName + " : " + returnType);
+                    writer.println("Method;" + methodName);
                 });
             });
             // Additional parsing logic can be added here

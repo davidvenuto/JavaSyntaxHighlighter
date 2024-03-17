@@ -1,111 +1,111 @@
-Type,Code
-Class/Interface,Animal
-Field,species : String
-Field,isMammal : boolean
-Field,habitat : String
-Method,displayInfo() : void
-Class/Interface,BankAccount
-Field,accountId : String
-Field,balance : double
-Method,deposit(double) : void
-Method,withdraw(double) : boolean
-Method,getAccountInfo() : String
-Class/Interface,Book
-Field,title : String
-Field,author : String
-Field,pages : int
-Method,getTitle() : String
-Method,getAuthor() : String
-Method,getPages() : int
-Class/Interface,Calculator
-Method,add(int, int) : int
-Method,subtract(int, int) : int
-Method,multiply(int, int) : int
-Method,divide(int, int) : double
-Class/Interface,Course
-Field,courseName : String
-Field,courseCode : String
-Field,credits : int
-Method,displayCourseInfo() : String
-Class/Interface,Employee
-Field,id : String
-Field,name : String
-Field,salary : double
-Method,raiseSalary(double) : void
-Method,getInfo() : String
-Class/Interface,Flight
-Field,flightNumber : String
-Field,airline : String
-Field,capacity : int
-Field,bookedSeats : int
-Method,bookSeat() : boolean
-Method,getFlightDetails() : String
-Class/Interface,GardenPlant
-Field,name : String
-Field,season : String
-Field,isPerennial : boolean
-Method,displayPlantDetails() : void
-Class/Interface,HelloWorld
-Method,main(String[]) : void
-Class/Interface,Library
-Field,name : String
-Field,numberOfBooks : int
-Method,addBook(int) : void
-Method,lendBook(int) : void
-Method,getInfo() : String
-Class/Interface,MusicTrack
-Field,title : String
-Field,artist : String
-Field,duration : double
-Method,playTrack() : void
-Class/Interface,Patient
-Field,name : String
-Field,age : int
-Field,illness : String
-Method,getPatientInfo() : String
-Class/Interface,Person
-Field,name : String
-Field,age : int
-Method,getName() : String
-Method,getAge() : int
-Method,birthday() : void
-Class/Interface,Quiz
-Field,topic : String
-Field,questions : List<String>
-Field,score : int
-Method,addQuestion(String) : void
-Method,takeQuiz() : void
-Method,updateScore(int) : void
-Method,getQuizResults() : String
-Class/Interface,Rectangle
-Field,length : double
-Field,width : double
-Method,calculateArea() : double
-Method,calculatePerimeter() : double
-Method,getDimensions() : String
-Class/Interface,ShoppingCart
-Field,items : Map<String, Integer>
-Method,addItem(String, int) : void
-Method,removeItem(String, int) : void
-Method,displayCartContents() : void
-Class/Interface,Task
-Field,title : String
-Field,dueDate : LocalDate
-Field,isCompleted : boolean
-Method,markAsCompleted() : void
-Method,getTaskDetails() : String
-Class/Interface,Timer
-Field,hours : int
-Field,minutes : int
-Field,seconds : int
-Method,tick() : void
-Method,getTime() : String
-Class/Interface,Vehicle
-Field,type : String
-Field,maxSpeed : int
-Method,displayInfo() : void
-Class/Interface,Weather
-Field,city : String
-Field,temperature : double
-Method,getWeatherReport() : String
-Method,updateTemperature(double) : void
+Type;Code
+Class/Interface;Animal
+Variable;species
+Variable;isMammal
+Variable;habitat
+Method;displayInfo()
+Class/Interface;BankAccount
+Variable;accountId
+Variable;balance
+Method;deposit(double)
+Method;withdraw(double)
+Method;getAccountInfo()
+Class/Interface;Book
+Variable;title
+Variable;author
+Variable;pages
+Method;getTitle()
+Method;getAuthor()
+Method;getPages()
+Class/Interface;Calculator
+Method;add(int, int)
+Method;subtract(int, int)
+Method;multiply(int, int)
+Method;divide(int, int)
+Class/Interface;Course
+Variable;courseName
+Variable;courseCode
+Variable;credits
+Method;displayCourseInfo()
+Class/Interface;Employee
+Variable;id
+Variable;name
+Variable;salary
+Method;raiseSalary(double)
+Method;getInfo()
+Class/Interface;Flight
+Variable;flightNumber
+Variable;airline
+Variable;capacity
+Variable;bookedSeats
+Method;bookSeat()
+Method;getFlightDetails()
+Class/Interface;GardenPlant
+Variable;name
+Variable;season
+Variable;isPerennial
+Method;displayPlantDetails()
+Class/Interface;HelloWorld
+Method;main(String[])
+Class/Interface;Library
+Variable;name
+Variable;numberOfBooks
+Method;addBook(int)
+Method;lendBook(int)
+Method;getInfo()
+Class/Interface;MusicTrack
+Variable;title
+Variable;artist
+Variable;duration
+Method;playTrack()
+Class/Interface;Patient
+Variable;name
+Variable;age
+Variable;illness
+Method;getPatientInfo()
+Class/Interface;Person
+Variable;name
+Variable;age
+Method;getName()
+Method;getAge()
+Method;birthday()
+Class/Interface;Quiz
+Variable;topic
+Variable;questions
+Variable;score
+Method;addQuestion(String)
+Method;takeQuiz()
+Method;updateScore(int)
+Method;getQuizResults()
+Class/Interface;Rectangle
+Variable;length
+Variable;width
+Method;calculateArea()
+Method;calculatePerimeter()
+Method;getDimensions()
+Class/Interface;ShoppingCart
+Variable;items
+Method;addItem(String, int)
+Method;removeItem(String, int)
+Method;displayCartContents()
+Class/Interface;Task
+Variable;title
+Variable;dueDate
+Variable;isCompleted
+Method;markAsCompleted()
+Method;getTaskDetails()
+Class/Interface;Timer
+Variable;hours
+Variable;minutes
+Variable;seconds
+Method;tick()
+Method;getTime()
+Class/Interface;Vehicle
+Variable;type
+Variable;maxSpeed
+Method;displayInfo()
+Class/Interface;Weather
+Variable;city
+Variable;temperature
+Method;getWeatherReport()
+Method;updateTemperature(double)
