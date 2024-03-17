@@ -1,29 +1,67 @@
 import com.github.javaparser.JavaParser;
 import com.github.javaparser.ParseResult;
 import com.github.javaparser.ast.CompilationUnit;
+import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-
-// IMPORTS ^^^^^^^^^^^^^
+import java.util.stream.Stream;
 
 public class JavaCodeParser {
+    public static void main(String[] args) {
+        JavaCodeParser parser = new JavaCodeParser();
+        String sourceFilesDirectory = "C:/Users/david/Desktop/Visual Studio/JavaSyntaxHighlighter/src/main/java/sourceFiles";
+        String csvOutputPath = "C:/Users/david/Desktop/Visual Studio/JavaSyntaxHighlighter/src/main/java/parsed_code.csv";
+        parser.parseDirectory(sourceFilesDirectory, csvOutputPath);
+    }
 
-    String filePath = "projectpath.java";
+    public void parseDirectory(String directoryPath, String csvOutputPath) {
+        Path path = Paths.get(directoryPath);
+        try (PrintWriter writer = new PrintWriter(csvOutputPath)) {
+            writer.println("Type,Code"); // CSV header
 
-    JavaParser javaParser = new JavaParser();
-    Path path = Paths.get(filePath);
-
-    public void parseCode(String filePath) {
-        JavaParser javaParser = new JavaParser();
-        Path path = Paths.get(filePath);
-
-        try {
-            ParseResult<CompilationUnit> result = javaParser.parse(path);
-            result.ifSuccessful(compilationUnit -> {
-                System.out.println(compilationUnit);
-            });
-        } catch (Exception e) {
-            e.printStackTrace();
+            // Walk through the directory and find Java files
+            try (Stream<Path> paths = Files.walk(path)) {
+                paths.filter(Files::isRegularFile)
+                     .filter(p -> p.toString().endsWith(".java"))
+                     .forEach(p -> {
+                        try {
+                            parseCode(p, writer);
+                        } catch (IOException e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        }
+                    });
+            }
+        } catch (IOException e) {
+            System.err.println("An error occurred: " + e.getMessage());
         }
+    }
+
+    public void parseCode(Path filePath, PrintWriter writer) throws IOException {
+        JavaParser javaParser = new JavaParser();
+
+        ParseResult<CompilationUnit> result = javaParser.parse(filePath);
+        result.ifSuccessful(compilationUnit -> {
+            compilationUnit.findAll(ClassOrInterfaceDeclaration.class).forEach(classOrInterfaceDeclaration -> {
+                String className = classOrInterfaceDeclaration.getNameAsString();
+                writer.println("Class/Interface," + className);
+
+                classOrInterfaceDeclaration.getFields().forEach(fieldDeclaration -> {
+                    String fieldName = fieldDeclaration.getVariables().get(0).getNameAsString();
+                    String fieldType = fieldDeclaration.getElementType().toString();
+                    writer.println("Field," + fieldName + " : " + fieldType);
+                });
+
+                classOrInterfaceDeclaration.getMethods().forEach(methodDeclaration -> {
+                    String methodName = methodDeclaration.getSignature().asString();
+                    String returnType = methodDeclaration.getType().toString();
+                    writer.println("Method," + methodName + " : " + returnType);
+                });
+            });
+            // Additional parsing logic can be added here
+        });
     }
 }
