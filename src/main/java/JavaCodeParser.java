@@ -41,24 +41,29 @@ public class JavaCodeParser {
 
     public void parseCode(Path filePath, PrintWriter writer) throws IOException {
         JavaParser javaParser = new JavaParser();
-
+    
         ParseResult<CompilationUnit> result = javaParser.parse(filePath);
         result.ifSuccessful(compilationUnit -> {
             compilationUnit.findAll(ClassOrInterfaceDeclaration.class).forEach(classOrInterfaceDeclaration -> {
-                String className = classOrInterfaceDeclaration.getNameAsString();
-                writer.println("Class/Interface;" + className);
-
+                String name = classOrInterfaceDeclaration.getNameAsString();
+                // Check if it's an interface
+                if (classOrInterfaceDeclaration.isInterface()) {
+                    writer.println("Interface;" + name);
+                } else {
+                    writer.println("Class;" + name);
+                }
+    
                 classOrInterfaceDeclaration.getFields().forEach(fieldDeclaration -> {
                     String fieldName = fieldDeclaration.getVariables().get(0).getNameAsString();
                     writer.println("Variable;" + fieldName);
                 });
-
+    
                 classOrInterfaceDeclaration.getMethods().forEach(methodDeclaration -> {
                     String methodName = methodDeclaration.getSignature().asString();
                     writer.println("Method;" + methodName);
                 });
             });
-            // Additional parsing logic can be added here
         });
     }
+    
 }
