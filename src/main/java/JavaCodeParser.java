@@ -8,6 +8,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.stream.Stream;
+import java.util.HashSet;
+import java.util.Set;
 
 public class JavaCodeParser {
     public static void main(String[] args) {
@@ -39,28 +41,43 @@ public class JavaCodeParser {
         }
     }
 
+  
+    
     public void parseCode(Path filePath, PrintWriter writer) throws IOException {
         JavaParser javaParser = new JavaParser();
+        Set<String> linesWritten = new HashSet<>(); // Set to store lines already written
     
         ParseResult<CompilationUnit> result = javaParser.parse(filePath);
         result.ifSuccessful(compilationUnit -> {
+            // Handle import declarations
+            compilationUnit.getImports().forEach(importDeclaration -> {
+                String importName = "Import;" + importDeclaration.getNameAsString();
+                if (linesWritten.add(importName)) { // Check if the line is not a duplicate
+                    writer.println(importName);
+                }
+            });
+    
+            // Existing code for classes, interfaces, methods, and variables
             compilationUnit.findAll(ClassOrInterfaceDeclaration.class).forEach(classOrInterfaceDeclaration -> {
                 String name = classOrInterfaceDeclaration.getNameAsString();
-                // Check if it's an interface
-                if (classOrInterfaceDeclaration.isInterface()) {
-                    writer.println("Interface;" + name);
-                } else {
-                    writer.println("Class;" + name);
+                String typeLine = classOrInterfaceDeclaration.isInterface() ? "Interface;" + name : "Class;" + name;
+    
+                if (linesWritten.add(typeLine)) { // Check if the line is not a duplicate
+                    writer.println(typeLine);
                 }
     
                 classOrInterfaceDeclaration.getFields().forEach(fieldDeclaration -> {
-                    String fieldName = fieldDeclaration.getVariables().get(0).getNameAsString();
-                    writer.println("Variable;" + fieldName);
+                    String fieldName = "Variable;" + fieldDeclaration.getVariables().get(0).getNameAsString();
+                    if (linesWritten.add(fieldName)) { // Check if the line is not a duplicate
+                        writer.println(fieldName);
+                    }
                 });
     
                 classOrInterfaceDeclaration.getMethods().forEach(methodDeclaration -> {
-                    String methodName = methodDeclaration.getSignature().asString();
-                    writer.println("Method;" + methodName);
+                    String methodName = "Method;" + methodDeclaration.getSignature().asString();
+                    if (linesWritten.add(methodName)) { // Check if the line is not a duplicate
+                        writer.println(methodName);
+                    }
                 });
             });
         });
