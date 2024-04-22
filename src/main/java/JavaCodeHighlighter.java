@@ -36,10 +36,9 @@ public class JavaCodeHighlighter {
 
     private void parseAndHighlight(Path filePath) throws IOException {
         String content = new String(Files.readAllBytes(filePath));
-        String simplifiedContent = content.replaceAll("\\s+", " ");
     
         JavaParser javaParser = new JavaParser();
-        ParseResult<CompilationUnit> result = javaParser.parse(simplifiedContent);
+        ParseResult<CompilationUnit> result = javaParser.parse(content);
     
         if (result.isSuccessful() && result.getResult().isPresent()) {
             CompilationUnit compilationUnit = result.getResult().get();
@@ -47,18 +46,18 @@ public class JavaCodeHighlighter {
     
             for (ClassOrInterfaceDeclaration decl : compilationUnit.findAll(ClassOrInterfaceDeclaration.class)) {
                 String colorCode = decl.isInterface() ? "\u001B[34m" : "\u001B[32m";
-                highlightNode(decl, colorCode, insertions);
+                highlightNode(decl, colorCode, insertions, content);  // pass content here
             }
     
             for (MethodDeclaration method : compilationUnit.findAll(MethodDeclaration.class)) {
-                highlightNode(method, "\u001B[35m", insertions);
+                highlightNode(method, "\u001B[35m", insertions, content);  // pass content here
             }
     
             for (VariableDeclarator var : compilationUnit.findAll(VariableDeclarator.class)) {
-                highlightNode(var, "\u001B[33m", insertions);
+                highlightNode(var, "\u001B[33m", insertions, content);  // pass content here
             }
-
-            StringBuilder highlightedContent = new StringBuilder(simplifiedContent);
+    
+            StringBuilder highlightedContent = new StringBuilder(content);
             insertions.entrySet().stream()
                 .sorted(Map.Entry.<Integer, String>comparingByKey().reversed())
                 .forEach(entry -> highlightedContent.insert(entry.getKey(), entry.getValue()));
@@ -67,14 +66,32 @@ public class JavaCodeHighlighter {
         }
     }
     
-    private void highlightNode(Node node, String colorCode, Map<Integer, String> insertions) {
+    
+    private void highlightNode(Node node, String colorCode, Map<Integer, String> insertions, String content) {
+        // Fetch positions directly from node
         Position startPos = node.getBegin().orElseThrow(() -> new IllegalStateException("Start position not available"));
         Position endPos = node.getEnd().orElseThrow(() -> new IllegalStateException("End position not available"));
-        int startIndex = startPos.column - 1; 
-        int endIndex = endPos.column; 
+        
+        // Calculate the absolute indices in the content string
+        int startIndex = calculateIndex(content, startPos.line, startPos.column);
+        int endIndex = calculateIndex(content, endPos.line, endPos.column);
     
-        insertions.put(startIndex, colorCode);
-        insertions.put(endIndex, "\u001B[0m");
+        insertions.put(startIndex, colorCode + insertions.getOrDefault(startIndex, ""));
+        insertions.put(endIndex, "\u001B[0m" + insertions.getOrDefault(endIndex, ""));
     }
+    
+    private int calculateIndex(String content, int line, int column) {
+        int index = 0;
+        int currentLine = 1;
+        
+        while (currentLine < line) {
+            index = content.indexOf('\n', index) + 1;
+            currentLine++;
+        }
+    
+        return index + column - 1;
+    }
+    
+    
     
 }
