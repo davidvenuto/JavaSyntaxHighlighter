@@ -46,15 +46,15 @@ public class JavaCodeHighlighter {
     
             for (ClassOrInterfaceDeclaration decl : compilationUnit.findAll(ClassOrInterfaceDeclaration.class)) {
                 String colorCode = decl.isInterface() ? "\u001B[34m" : "\u001B[32m";
-                highlightNode(decl, colorCode, insertions, content);  // pass content here
+                highlightNode(decl, colorCode, insertions, content); 
             }
     
             for (MethodDeclaration method : compilationUnit.findAll(MethodDeclaration.class)) {
-                highlightNode(method, "\u001B[35m", insertions, content);  // pass content here
+                highlightNode(method, "\u001B[35m", insertions, content);  
             }
     
             for (VariableDeclarator var : compilationUnit.findAll(VariableDeclarator.class)) {
-                highlightNode(var, "\u001B[33m", insertions, content);  // pass content here
+                highlightNode(var, "\u001B[33m", insertions, content);  
             }
     
             StringBuilder highlightedContent = new StringBuilder(content);
@@ -68,11 +68,9 @@ public class JavaCodeHighlighter {
     
     
     private void highlightNode(Node node, String colorCode, Map<Integer, String> insertions, String content) {
-        // Fetch positions directly from node
         Position startPos = node.getBegin().orElseThrow(() -> new IllegalStateException("Start position not available"));
         Position endPos = node.getEnd().orElseThrow(() -> new IllegalStateException("End position not available"));
-        
-        // Calculate the absolute indices in the content string
+
         int startIndex = calculateIndex(content, startPos.line, startPos.column);
         int endIndex = calculateIndex(content, endPos.line, endPos.column);
     
